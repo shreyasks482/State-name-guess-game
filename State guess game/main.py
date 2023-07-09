@@ -18,19 +18,23 @@ missing_states = []
 
 while len(guessed_states) < 50:
     ans_state = mys.textinput(title=f"{len(guessed_states)}/50 states guessed",
-                              prompt="What's another state name").title()
-    if ans_state == "Exit":
+                              prompt="What's another state name")
+    # ans_state = ans_state.title()
+    if ans_state is not None:
+        ans_state = ans_state.title()
+    elif ans_state == "Exit" or ans_state == "" or ans_state is None:
         for state in all_states:
             if state not in guessed_states:
                 missing_states.append(state)
         break
+
     if ans_state in all_states:
         guessed_states.append(ans_state)
         t = turtle.Turtle()
         t.hideturtle()
         t.penup()
         state_data = data[data.state == ans_state]
-        t.goto(int(state_data.x), int(state_data.y))
+        t.goto(int(state_data.x.iloc[0]), int(state_data.y.iloc[0]))
         t.write(state_data.state.item())
 
 if len(missing_states) == 0:
